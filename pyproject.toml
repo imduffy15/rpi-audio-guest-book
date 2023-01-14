@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "rpi-guest-book"
+version = "0.0.1"
+description = "Creates an audio guest book using a RPI and retro phone"
+authors = ["Ian Duffy <ian@ianduffy.ie>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "rpi_guest_book"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pynput = "^1.7.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
