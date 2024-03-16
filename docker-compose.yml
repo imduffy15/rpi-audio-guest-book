@@ -1,0 +1,47 @@
+version: "2"
+
+volumes:
+  pulse: 
+
+services:
+  # audio:
+  #   image: bh.cr/balenalabs/audio-aarch64
+  #   privileged: true
+    # labels:
+    #   io.balena.features.dbus: '1'
+  #   devices:
+  #     - "/dev/snd:/dev/snd/"
+  #     - "/dev/bus/usb:/dev/bus/usb"
+  #   ports:
+  #     - 4317:4317
+  #   volumes:
+  #     - 'pulse:/run/pulse'
+  #   environment:
+  #     AUDIO_VOLUME: "100%"
+  #     DBUS_SYSTEM_BUS_ADDRESS: "unix:path=/host/run/dbus/system_bus_socket"
+  #     AUDIO_OUTPUT: "alsa_output.usb-soundcard-3.analog-stereo"
+
+  rpi-audio-guest-book:
+    build: .
+    restart: always
+    tty: true
+    labels:
+      io.balena.features.dbus: '1'
+    privileged: true
+    devices:
+      - "/dev/bus/usb:/dev/bus/usb"
+      - "/dev/snd:/dev/snd"
+    environment:
+      DBUS_SYSTEM_BUS_ADDRESS: "unix:path=/host/run/dbus/system_bus_socket"
+      INPUT_LISTENER: "gpio"
+
+  wifi-connect:
+    build:
+      context: ./wifi-connect
+    restart: always
+    network_mode: host
+    privileged: true
+    labels:
+      io.balena.features.dbus: '1'
+    environment:
+        DBUS_SYSTEM_BUS_ADDRESS: "unix:path=/host/run/dbus/system_bus_socket"

@@ -1,0 +1,8 @@
+name: rpi-audio-guest-book
+type: sw.application
+joinable: false
+description: >-
+  rpi-audio-guest-book
+data:
+  supportedDeviceTypes:
+    - generic-aarch64

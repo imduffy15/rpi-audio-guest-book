@@ -1,0 +1,29 @@
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian-golang:1.19-bullseye-build as build
+
+WORKDIR /go/src/github.com/imduffy15/rpi-audio-guest-book
+
+COPY go.sum go.sum
+COPY go.mod go.mod
+
+COPY main.go main.go
+COPY pkg/ pkg/
+COPY audio/ audio/
+
+RUN apt-get update && apt-get install -y libasound2-dev libudev-dev && go build main.go
+
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian:bullseye-run
+
+RUN apt-get update && apt-get install -y gpiod alsa-utils ffmpeg mplayer && rm -rf /var/lib/apt/lists/*
+
+ENV UDEV=on
+ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
+
+WORKDIR /go/src/github.com/imduffy15/rpi-audio-guest-book
+
+COPY --from=build /go/src/github.com/imduffy15/rpi-audio-guest-book/audio/ audio/
+COPY --from=build /go/src/github.com/imduffy15/rpi-audio-guest-book/main .
+COPY asound.conf /etc/asound.conf
+
+RUN mkdir recordings
+
+CMD [ "./main" ]
