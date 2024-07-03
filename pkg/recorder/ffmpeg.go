@@ -28,7 +28,8 @@ func (f *FFmpeg) Record(filename string) (err error) {
 			f.process = nil
 		}()
 
-		cmd := exec.Command("ffmpeg", "-f", "avfoundation", "-i", ":1", fmt.Sprintf("%s%s", f.RecordingsPath, filename))
+		// ffmpeg -f alsa -channels 1 -i hw:0,0 -ac 1 
+		cmd := exec.Command("ffmpeg", "-f", "alsa", "-channels", "1", "-ac", "1", "-i", "hw:3", fmt.Sprintf("%s%s", f.RecordingsPath, filename))
 
 		fmt.Printf("Running %s\n", cmd)
 

@@ -26,7 +26,7 @@ if [ $? -eq 0 ]; then
     printf 'Skipping WiFi Connect\n'
 else
     printf 'Starting WiFi Connect\n'
-    ./wifi-connect -s rpi-audio-guest-book
+    ./wifi-connect -s -o 8080 rpi-audio-guest-book 
 fi
 
 # Start your application here.

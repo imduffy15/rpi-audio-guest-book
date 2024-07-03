@@ -24,6 +24,8 @@ COPY --from=build /go/src/github.com/imduffy15/rpi-audio-guest-book/audio/ audio
 COPY --from=build /go/src/github.com/imduffy15/rpi-audio-guest-book/main .
 COPY asound.conf /etc/asound.conf
 
+COPY start.sh start.sh
+
 RUN mkdir recordings
 
-CMD [ "./main" ]
+CMD [ "./start.sh" ]

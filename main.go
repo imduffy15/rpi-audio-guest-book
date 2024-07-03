@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-
+	"net/http"
 	htgotts "github.com/hegedustibor/htgo-tts"
 	"github.com/hegedustibor/htgo-tts/voices"
 
@@ -59,6 +59,13 @@ func run(ctx context.Context, config *viperConfig.Config) error {
 	inputListenerErr := make(chan error, 1)
 	go func() {
 		inputListenerErr <- inputListener.Start(telephone)
+	}()
+
+
+	fs := http.FileServer(http.Dir(config.RecordingsPath))
+	http.Handle("/", http.StripPrefix("/", fs))
+	go func() {
+		_ = http.ListenAndServe(":80", nil)
 	}()
 
 	select {

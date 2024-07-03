@@ -37,9 +37,9 @@ func NewTelephone(speech htgotts.Speech, player player.Player, recorder recorder
 func (t *Telephone) ToggleState() {
 	currentState := t.state.Load().(State)
 	if currentState == OnHook {
-		t.transition(OffHook)
+		t.Transition(OffHook)
 	} else {
-		t.transition(OnHook)
+		t.Transition(OnHook)
 	}
 }
 
@@ -63,7 +63,7 @@ var transitionTable = map[State]transition{
 		recording := make(chan error, 1)
 		go func() {
 
-			recording <- t.recorder.Record(fmt.Sprintf("%d.mp3", time.Now().Unix()))
+			recording <- t.recorder.Record(fmt.Sprintf("%d.wav", time.Now().Unix()))
 		}()
 		defer t.recorder.Shutdown()
 
@@ -81,7 +81,7 @@ var transitionTable = map[State]transition{
 	},
 }
 
-func (t *Telephone) transition(newState State) {
+func (t *Telephone) Transition(newState State) {
 	if transitionFunc, ok := transitionTable[newState]; ok {
 		go transitionFunc(t)
 		t.state.Store(newState)

@@ -2,7 +2,6 @@ package config
 
 import (
 	"github.com/spf13/viper"
-	"github.com/warthog618/go-gpiocdev/device/rpi"
 )
 
 type InputType string
@@ -26,7 +25,7 @@ func LoadViperConfig() *Config {
 	viper.SetDefault("input_listener", Keyboard)
 	viper.SetDefault("volume", 100)
 	viper.SetDefault("gpio_board", "gpiochip0")
-	viper.SetDefault("gpio_pin", rpi.GPIO18)
+	viper.SetDefault("gpio_pin", 18)
 	viper.SetDefault("recordings_path", "recordings/")
 
 	var config *Config
