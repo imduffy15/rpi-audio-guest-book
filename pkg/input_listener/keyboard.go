@@ -20,7 +20,7 @@ func NewKeyboardInputListener() *KeyboardInputListener {
 	return &KeyboardInputListener{}
 }
 
-func (k *KeyboardInputListener) Start(telephone *telephone.Telephone) error {
+func (k *KeyboardInputListener) Start(t *telephone.Telephone) error {
 	var cancel context.CancelFunc
 	k.ctx, cancel = context.WithCancel(context.Background())
 	defer cancel()
@@ -42,7 +42,7 @@ func (k *KeyboardInputListener) Start(telephone *telephone.Telephone) error {
 			return event.Err
 		}
 		if event.Key == keyboard.KeySpace {
-			telephone.ToggleState()
+			t.Transition(telephone.OffHook)
 		} else if event.Key == keyboard.KeyCtrlC {
 			return nil
 		}

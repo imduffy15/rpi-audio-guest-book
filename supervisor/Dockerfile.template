@@ -1,0 +1,7 @@
+FROM balenalib/%%BALENA_MACHINE_NAME%%-debian:bullseye-run
+
+USER root
+
+COPY ./recover.sh /recover.sh
+
+CMD [ "/recover.sh" ]

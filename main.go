@@ -3,12 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
+	htgotts "github.com/hegedustibor/htgo-tts"
+	"github.com/hegedustibor/htgo-tts/voices"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
-	"net/http"
-	htgotts "github.com/hegedustibor/htgo-tts"
-	"github.com/hegedustibor/htgo-tts/voices"
 
 	viperConfig "github.com/imduffy15/rpi-audio-guest-book/pkg/config"
 	"github.com/imduffy15/rpi-audio-guest-book/pkg/input_listener"
@@ -60,7 +60,6 @@ func run(ctx context.Context, config *viperConfig.Config) error {
 	go func() {
 		inputListenerErr <- inputListener.Start(telephone)
 	}()
-
 
 	fs := http.FileServer(http.Dir(config.RecordingsPath))
 	http.Handle("/", http.StripPrefix("/", fs))
